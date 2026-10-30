@@ -1,0 +1,11 @@
+{
+  "id": "./", "name": "مكتبة الجيل", "short_name": "مكتبة الجيل",
+  "description": "مساحة للمعرفة — مكتبة عربية بواجهة مناسبة للهاتف",
+  "lang": "ar", "dir": "rtl", "start_url": "./", "scope": "./",
+  "display": "standalone", "background_color": "#f8f9f6", "theme_color": "#163e3b",
+  "icons": [
+    {"src":"./icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"./icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
+    {"src":"./icons/maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+  ]
+}
