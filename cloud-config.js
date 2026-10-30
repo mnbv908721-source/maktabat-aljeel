@@ -1,0 +1,1 @@
+window.ALJEEL_CLOUD_ENABLED=true;
