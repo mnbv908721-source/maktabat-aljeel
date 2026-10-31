@@ -1,23 +1,23 @@
 /* Arabic invoice layout. jsPDF (MIT) and Amiri (OFL) are bundled locally. */
 (function(root){
   'use strict';
-  function build(jsPDF,fontBase64,items,date=new Date(),number='DEMO'){
+  function build(jsPDF,fontBase64,items,date=new Date(),number='DEMO',options={}){
     if(!items.length)throw new Error('لا يمكن إصدار فاتورة لسلة فارغة.');
     const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true,putOnlyUsedFonts:true});
     doc.addFileToVFS('Amiri-Regular.ttf',fontBase64);
     doc.addFont('Amiri-Regular.ttf','Amiri','normal');
     doc.setFont('Amiri','normal');
     doc.setLanguage('ar-IQ');
-    doc.setProperties({title:'فاتورة تجريبية - مكتبة الجيل',subject:'فاتورة سلة محلية غير مدفوعة',author:'مكتبة الجيل',creator:'مكتبة الجيل'});
-    const green=[22,62,59],muted=[110,126,121];
+    doc.setProperties({title:'فاتورة - مكتبة الجيل',subject:'ملخص الطلب وليس إثبات دفع',author:'مكتبة الجيل',creator:'مكتبة الجيل'});
+    const green=[18,92,192],muted=[110,126,121];
     function arabic(text,x,y,size=12,color=green){doc.setFontSize(size);doc.setTextColor(...color);doc.setR2L(false);doc.text(String(text),x,y,{align:'right'});}
     function numeric(text,x,y,size=12,color=green){doc.setFontSize(size);doc.setTextColor(...color);doc.setR2L(false);doc.text(String(text),x,y,{align:'right'});}
     const money=n=>n.toLocaleString('ar-IQ');
     doc.setFillColor(...green);doc.rect(0,0,210,7,'F');
     arabic('مكتبة الجيل',192,28,27);
-    arabic('فاتورة مشتريات تجريبية',192,40,14,muted);
-    doc.setFillColor(234,240,223);doc.roundedRect(18,18,51,18,3,3,'F');
-    arabic('نسخة تجريبية',63,29,14);
+    arabic(options.isDemo?'فاتورة مشتريات تجريبية':'فاتورة مشتريات',192,40,14,muted);
+    doc.setFillColor(235,243,255);doc.roundedRect(18,18,51,18,3,3,'F');
+    arabic(options.isDemo?'نسخة تجريبية':'تفاصيل الطلب',63,29,14);
     doc.setDrawColor(221,229,218);doc.line(18,49,192,49);
     arabic('رقم الفاتورة',192,60,11,muted);numeric(number,143,60,11);
     arabic('تاريخ الطلب',192,70,11,muted);
@@ -43,11 +43,11 @@
       y+=rowHeight;
     }
     const total=items.reduce((sum,item)=>sum+item.price*item.quantity,0);
-    y+=9;doc.setFillColor(234,240,223);doc.roundedRect(18,y,174,20,3,3,'F');
+    y+=9;doc.setFillColor(235,243,255);doc.roundedRect(18,y,174,20,3,3,'F');
     arabic('المجموع الكلي',186,y+13,16);
     numeric(money(total),85,y+13,17);arabic('د.ع',41,y+13,12);
     arabic('شكراً لاختيارك مكتبة الجيل',192,y+35,15);
-    arabic('هذه فاتورة تجريبية. لم يتم إرسال طلب أو تحصيل أي مبلغ.',192,y+46,11,muted);
+    arabic('هذه الفاتورة ملخص للطلب، وليست إثبات دفع.',192,y+46,11,muted);
     doc.setDrawColor(221,229,218);doc.line(18,277,192,277);
     arabic('مكتبة الجيل | نقرأ اليوم، نصنع الغد',192,286,11,muted);
     numeric('1 / 1',34,286,10,muted);
